@@ -9,7 +9,7 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      # Checkout the repo
+      # Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -19,22 +19,23 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: maven
+          cache: gradle
 
-      # Build Maven project
-      - name: Build with Maven
-        run: mvn package
+      # Build with Gradle
+      - name: Build with Gradle
+        run: ./gradlew build
 
       # Upload artifact
-      - name: Upload Maven artifact
+      - name: Upload Gradle artifact
         uses: actions/upload-artifact@v4
         with:
           name: my-artifact
-          path: target/*.jar
+          path: build/libs/*.jar
 
       # Trivy FS Scan
       - name: Trivy FS Scan
-        run: trivy fs --format table -o trivy-fs-report.html .
+        run: |
+          trivy fs --format table -o trivy-fs-report.html .
 
       # SonarQube scan
       - name: SonarQube Scan
@@ -56,7 +57,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
-      # Set up QEMU for multi-arch builds
+      # Set up QEMU for multi-arch Docker builds
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -66,11 +67,13 @@ jobs:
 
       # Build Docker image
       - name: Build Docker Image
-        run: docker build -t adijaiswal/boardgame:latest .
+        run: |
+          docker build -t adijaiswal/boardgame:latest .
 
       # Trivy Image Scan
       - name: Trivy Image Scan
-        run: trivy image --format table -o trivy-image-report.html adijaiswal/boardgame:latest
+        run: |
+          trivy image --format table -o trivy-image-report.html adijaiswal/boardgame:latest
 
       # Docker login
       - name: Login to Docker Hub
@@ -81,10 +84,14 @@ jobs:
 
       # Push Docker image
       - name: Push Docker Image
-        run: docker push adijaiswal/boardgame:latest
+        run: |
+          docker push adijaiswal/boardgame:latest
 
       # Kubernetes deployment
       - name: Kubectl Apply Deployment
+        uses: tale/kubectl-action@v1
+        with:
+          base64-kube-config: ${{ secrets.KUBE_CONFIG }}
         run: |
           kubectl apply -f deployment-service.yaml -n webapps
           kubectl get svc -n webapps
