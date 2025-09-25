@@ -1,13 +1,28 @@
+<<<<<<< HEAD
 name: Runner Test
 
 on:
+=======
+name: Test Self-Hosted Runner
+
+on:
+  push:
+    branches: [ "main" ]
+>>>>>>> 6121ed7 (Initial commit with test workflow)
   workflow_dispatch:
 
 jobs:
   test:
     runs-on: self-hosted
     steps:
+<<<<<<< HEAD
       - run: echo "✅ Self-hosted runner is working!"
       - run: uname -a
       - run: docker --version
 
+=======
+      - name: Print runner info
+        run: |
+          echo "Running on self-hosted runner"
+          uname -a
+>>>>>>> 6121ed7 (Initial commit with test workflow)
