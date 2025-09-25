@@ -3,12 +3,17 @@ name: Runner Test
 
 on:
 =======
+=======
+>>>>>>> 6121ed7f398603bb7a00e208f3f1b80fe0124200
 name: Test Self-Hosted Runner
 
 on:
   push:
     branches: [ "main" ]
+<<<<<<< HEAD
 >>>>>>> 6121ed7 (Initial commit with test workflow)
+=======
+>>>>>>> 6121ed7f398603bb7a00e208f3f1b80fe0124200
   workflow_dispatch:
 
 jobs:
@@ -16,13 +21,19 @@ jobs:
     runs-on: self-hosted
     steps:
 <<<<<<< HEAD
+<<<<<<< HEAD
       - run: echo "✅ Self-hosted runner is working!"
       - run: uname -a
       - run: docker --version
 
 =======
+=======
+>>>>>>> 6121ed7f398603bb7a00e208f3f1b80fe0124200
       - name: Print runner info
         run: |
           echo "Running on self-hosted runner"
           uname -a
+<<<<<<< HEAD
 >>>>>>> 6121ed7 (Initial commit with test workflow)
+=======
+>>>>>>> 6121ed7f398603bb7a00e208f3f1b80fe0124200
