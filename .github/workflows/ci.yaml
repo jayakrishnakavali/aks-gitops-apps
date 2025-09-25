@@ -4,15 +4,18 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:   # optional, allows manual trigger
+  workflow_dispatch:   # allows manual trigger
 
 jobs:
   build:
-    runs-on: self-hosted   # <- THIS sends the job to your runner
+    runs-on: [self-hosted, Linux, X64]  # matches your self-hosted runner
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Print Hello
         run: echo "Hello from self-hosted runner!"
+
+      - name: List current directory
+        run: ls -la
 
